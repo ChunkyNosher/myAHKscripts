@@ -26,7 +26,7 @@ Menu, Tray, Icon, imageres.dll, 90
 ;The easy solution is to just fill up your timeline with tracks; have no blank space.
 
 ;---------------------------------------------------------------------------------------
-/*
+
 ;First, we define all the timeline's DEFAULT possible colors.
 ;(Note that your colors will be different if you changed the UI brightness inside preferences > appearance > brightness.)
 ;I used Window Spy (it comes with AHK) to detect the exact colors onscreen.
@@ -97,7 +97,7 @@ else
 	sendinput {Rbutton}
 theEnd:
 Return
-*/
+
 
 ;If you don't want to use Rbutton (the right mouse button), then you don't need to check for colors and things. This simplifies the script siginificantly.
 ;In the following script, You can change "Mbutton" to anything else. like "Xbutton1", or  even "F12" if you wanted.
