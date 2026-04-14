@@ -59,11 +59,14 @@ MouseGetPos, X, Y, , PremiereSequenceCheck
 PixelGetColor colorr, %X%, %Y%, RGB
 if (IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
 {
+	cleanupEscapeCount := 1
+	Click, middle
+	Sleep, 10
 	if (colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7) ;these are the timeline colors of a selected clip or blank space, in or outside of in/out points.
 		send {ESC} ;in Premiere 13.0, ESCAPE will now deselect clips on the timeline, in addition to its other uses. i think it is good ot use here, now. But you can swap this out with CTRL SHIFT D if you like.
 	;send ^!d ;in Premiere, set CTRL ALT D to "DESELECT ALL"
 	;BREAKTHROUGH -- it looks like a middle mouse click will BRING FOCUS TO a panel without doing ANYTHING ELSE like selecting or going through tabs or anything. Unfortunately, i still can't know with AHK which panel is already in focus.
-	;click middle ;sends the middle mouse button to BRING FOCUS TO the timeline, WITHOUT selecting any clips or empty spaces between clips. very nice!
+	;Click, middle sends the middle mouse button to BRING FOCUS TO the timeline, WITHOUT selecting any clips or empty spaces between clips. very nice!
 	; tooltip, % GetKeyState("Rbutton", "P") ;<----this was essential for me to figure out EXACTLY how AHK wanted this query to be phrased. Why should i need the quotation marks?? Why does it return a 1 and 0, but for the other method, it returns U and D? Who the hell knows...
 	; if GetKeyState("$Rbutton") = D ;<--- see, this line did not work AT ALL.
 	if GetKeyState("Rbutton", "P") = 1 ;<----THIS is the only way to phrase this query.
@@ -73,28 +76,26 @@ if (IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
 		;tooltip, 
 		loop
 		{
-			UpdateTimelinePanelClassNN()
-			MouseGetPos, X, Y, , PremiereSequenceCheck
-			PixelGetColor colorr, %X%, %Y%, RGB
-			if !(IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
-			{
-				sendinput {Rbutton}
-				goto theEnd
-			}
 			Send \ ;in premiere, this must be set to "move playhead to cursor."
+			MouseGetPos, X, Y
+			PixelGetColor movedColor, %X%, %Y%, RGB
+			if (movedColor = timeline5 || movedColor = timeline6)
+				cleanupEscapeCount := 2
 			;Tooltip, Right click playhead mod! %PremiereSequenceCheck% %PremiereTimelinePanelClassNN% ;you can remove this line if you don't like the tooltip. You don't need it!
 			if GetKeyState("Rbutton", "P") = 0
 			{
 				;msgbox,,,time to break,1 ;I use message boxes when debugging, and then just comment the out rather than deleting them. It's just like disabling a clip in Premiere.
 				tooltip,
+				if (cleanupEscapeCount = 2)
+					Send {Esc}{Esc}
+				else
+					Send {Esc}
 				goto theEnd
 				break
 			}
 			sleep 3 ;this loop will repeat every 16 milliseconds.
 		}
 	}
-	;tooltip,
-	Send {escape} ;in case you end up inside the "delete" right click menu from the timeline
 	;MouseClick, left ;notice how this is commented out. I deemed it inferior to using ESCAPE.
 }
 else
