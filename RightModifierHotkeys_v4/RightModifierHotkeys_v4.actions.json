@@ -1,0 +1,171 @@
+{
+	"schemaVersion": 1,
+	"actions": [
+		{
+			"id": "launch_yt_dlp_batch",
+			"label": "Launch yt-dlp Batch Downloader",
+			"kind": "launch_batch_script",
+			"data": {
+				"scriptPath": "E:\\Chunky's Master Folder\\myEditingScripts\\yt-dlp batch downloader.bat"
+			}
+		},
+		{
+			"id": "launch_yt_dlp_batch_checker",
+			"label": "Launch yt-dlp Format Checker",
+			"kind": "launch_batch_script",
+			"data": {
+				"scriptPath": "E:\\Chunky's Master Folder\\myEditingScripts\\yt-dlp-format-checker.bat"
+			}
+		},
+		{
+			"id": "launch_arc",
+			"label": "Launch Arc",
+			"kind": "launch_or_activate",
+			"data": {
+				"target": "ahk_exe Arc.exe",
+				"run": "Arc.exe"
+			}
+		},
+		{
+			"id": "launch_zen",
+			"label": "Launch Zen",
+			"kind": "launch_or_activate",
+			"data": {
+				"target": "ahk_exe zen.exe",
+				"run": "Zen.exe"
+			}
+		},
+		{
+			"id": "launch_focusrite",
+			"label": "Launch Focusrite Device Settings",
+			"kind": "launch_or_activate",
+			"data": {
+				"target": "ahk_exe Focusrite Notifier.exe",
+				"run": "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Focusrite Drivers\\Focusrite Device Settings.lnk"
+			}
+		},
+		{
+			"id": "activate_explorer",
+			"label": "Activate Explorer",
+			"kind": "launch_or_cycle_group",
+			"data": {
+				"target": "ahk_class CabinetWClass",
+				"activeTarget": "ahk_exe explorer.exe",
+				"run": "explorer.exe",
+				"groupName": "RightModifierHotkeysV4_Files",
+				"groupTargets": [
+					"ahk_class CabinetWClass"
+				]
+			}
+		},
+		{
+			"id": "launch_premiere",
+			"label": "Launch Premiere Pro",
+			"kind": "launch_or_activate",
+			"data": {
+				"target": "ahk_exe Adobe Premiere Pro.exe",
+				"run": "Adobe Premiere Pro.exe"
+			}
+		},
+		{
+			"id": "launch_one_commander",
+			"label": "Launch OneCommander",
+			"kind": "launch_or_cycle_group",
+			"data": {
+				"target": "ahk_exe OneCommander.exe",
+				"activeTarget": "ahk_exe OneCommander.exe",
+				"run": "OneCommander.exe",
+				"groupName": "RightModifierHotkeysV4_Files",
+				"groupTargets": [
+					"ahk_exe OneCommander.exe"
+				]
+			}
+		},
+		{
+			"id": "activate_notepad_plus_plus",
+			"label": "Activate Notepad++",
+			"kind": "launch_or_activate",
+			"data": {
+				"target": "ahk_exe notepad++.exe",
+				"run": "Notepad++.exe"
+			}
+		},
+		{
+			"id": "activate_vscode",
+			"label": "Activate VS Code Insiders",
+			"kind": "launch_or_cycle_group",
+			"data": {
+				"target": "ahk_exe Code - Insiders.exe",
+				"activeTarget": "ahk_exe Code - Insiders.exe",
+				"run": "Visual Studio Code - Insiders",
+				"groupName": "RightModifierHotkeysV4_VSCode",
+				"groupTargets": [
+					"ahk_exe Code - Insiders.exe"
+				]
+			}
+		},
+		{
+			"id": "toggle_random_wiggler_premiere",
+			"label": "Toggle Random Wiggler in Premiere",
+			"kind": "send_sequence_if_active",
+			"data": {
+				"target": "ahk_exe Adobe Premiere Pro.exe",
+				"sendMode": "input",
+				"sequence": [
+					"{Alt}",
+					"w",
+					"e",
+					"{Right}",
+					"r"
+				]
+			}
+		},
+		{
+			"id": "toggle_always_on_top",
+			"label": "Toggle Always On Top",
+			"kind": "toggle_always_on_top",
+			"data": {}
+		},
+		{
+			"id": "open_all_folders",
+			"label": "Open All Project Folders",
+			"kind": "open_folders",
+			"data": {
+				"launchTarget": "explorer.exe",
+				"activateTarget": "ahk_exe explorer.exe",
+				"folderPaths": [
+					"D:\\Chunky's Master Folder External Drive",
+					"Downloads",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Video Specific Assets and Footage\\LIMC video\\Images",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Video Specific Assets and Footage\\LIMC video\\Video",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Video Specific Assets and Footage\\LIMC video\\Footage and Audio Clips",
+					"E:\\Chunky's Master Folder\\Snipping Tool and Screenshots\\Screenshots",
+					"E:\\Chunky's Master Folder\\Chunky Photoshop Folder\\Final Project",
+					"E:\\Chunky's Master Folder\\Recordings",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets\\Universal Video Assets",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets\\Universal Image Assets",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets\\Universal Audio Assets",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets\\Universal Audio Assets\\Music",
+					"D:\\Chunky's Master Folder External Drive\\Chunky Premiere Pro Folder\\Universal Assets\\Universal Audio Assets\\SFX",
+					"E:\\Chunky's Master Folder\\Chunky Audition Folder\\Final Recordings",
+					"E:\\Chunky's Master Folder\\Chunky After Effects Folder\\Final Projects"
+				],
+				"waits": {
+					"long": 2000,
+					"med": 1000,
+					"short": 550,
+					"quick": 350
+				}
+			}
+		},
+		{
+			"id": "slide_in_from_left",
+			"label": "Premiere Slide In From Left",
+			"kind": "premiere_slide_preset",
+			"data": {
+				"presetName": "Slide in from left"
+			}
+		}
+	]
+}

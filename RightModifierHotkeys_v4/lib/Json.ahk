@@ -148,7 +148,7 @@ class Json {
                     this.index += 1
 
                     switch escape {
-                        case '"', "\\", "/":
+                        case '"', "\", "/":
                             result .= escape
                         case "b":
                             result .= Chr(8)
