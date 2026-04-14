@@ -41,20 +41,27 @@ timeline7 = 0x191919 ;the color of a SELECTED blank space on the timeline, IN th
 
 timeline8 = 0x1c1c1c ;NEW color as of 2024, of the NON TARGETED space between in/out points. UNFORTUNATELY, this is also the same color as the BINS in areas where there are no items, meaning now you can't right click to make new items and folders and stuff, and therefore, I must remove it from the list below. SUPER LAME.
 
-PremiereSequenceWindow := ["DroverLord - Window Class83, DroverLord - Window Class84, DroverLord - Window Class85, DroverLord - Window Class86, DroverLord - Window Class87, DroverLord - Window Class65, DroverLord - Window Class55, DroverLord - Window Class53"]
+;These screen bounds are more stable than Premiere's changing timeline ClassNN value.
+timelinePanelTargetX := 335
+timelinePanelTargetY := 718
+timelinePanelTargetW := 1630
+timelinePanelTargetH := 651
+timelinePanelTolerance := 35
+PremiereTimelinePanelClassNN := ""
 
 
 #IfWinActive ahk_exe Adobe Premiere Pro.exe ;exact name was gotten from windowspy
 ;--------EVERYTHING BELOW THIS LINE WILL ONLY WORK INSIDE PREMIERE PRO!----------
 
 Rbutton::
+UpdateTimelinePanelClassNN()
 MouseGetPos, X, Y, , PremiereSequenceCheck
 PixelGetColor colorr, %X%, %Y%, RGB
-if (colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7) ;these are the timeline colors of a selected clip or blank space, in or outside of in/out points.
-	send {ESC} ;in Premiere 13.0, ESCAPE will now deselect clips on the timeline, in addition to its other uses. i think it is good ot use here, now. But you can swap this out with CTRL SHIFT D if you like.
-;send ^!d ;in Premiere, set CTRL ALT D to "DESELECT ALL"
-if (colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = timeline3 || colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7) ;alternatively, i think I can use "if in" for this kind of thing..
+if (IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
 {
+	if (colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7) ;these are the timeline colors of a selected clip or blank space, in or outside of in/out points.
+		send {ESC} ;in Premiere 13.0, ESCAPE will now deselect clips on the timeline, in addition to its other uses. i think it is good ot use here, now. But you can swap this out with CTRL SHIFT D if you like.
+	;send ^!d ;in Premiere, set CTRL ALT D to "DESELECT ALL"
 	;BREAKTHROUGH -- it looks like a middle mouse click will BRING FOCUS TO a panel without doing ANYTHING ELSE like selecting or going through tabs or anything. Unfortunately, i still can't know with AHK which panel is already in focus.
 	;click middle ;sends the middle mouse button to BRING FOCUS TO the timeline, WITHOUT selecting any clips or empty spaces between clips. very nice!
 	; tooltip, % GetKeyState("Rbutton", "P") ;<----this was essential for me to figure out EXACTLY how AHK wanted this query to be phrased. Why should i need the quotation marks?? Why does it return a 1 and 0, but for the other method, it returns U and D? Who the hell knows...
@@ -66,8 +73,16 @@ if (colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = t
 		;tooltip, 
 		loop
 		{
+			UpdateTimelinePanelClassNN()
+			MouseGetPos, X, Y, , PremiereSequenceCheck
+			PixelGetColor colorr, %X%, %Y%, RGB
+			if !(IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
+			{
+				sendinput {Rbutton}
+				goto theEnd
+			}
 			Send \ ;in premiere, this must be set to "move playhead to cursor."
-			;Tooltip, Right click playhead mod! %PremiereSequenceCheck% %PremiereSequenceWindow% ;you can remove this line if you don't like the tooltip. You don't need it!
+			;Tooltip, Right click playhead mod! %PremiereSequenceCheck% %PremiereTimelinePanelClassNN% ;you can remove this line if you don't like the tooltip. You don't need it!
 			if GetKeyState("Rbutton", "P") = 0
 			{
 				;msgbox,,,time to break,1 ;I use message boxes when debugging, and then just comment the out rather than deleting them. It's just like disabling a clip in Premiere.
@@ -75,15 +90,6 @@ if (colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = t
 				goto theEnd
 				break
 			}
-			if PremiereSequenceCheck in %PremiereSequenceWindow%
-			{
-				goto skipRbutton
-			}
-			if PremiereSequenceCheck not in %PremiereSequenceWindow%
-			{
-				sendinput {Rbutton}
-			}
-			skipRbutton:
 			sleep 3 ;this loop will repeat every 16 milliseconds.
 		}
 	}
@@ -91,8 +97,6 @@ if (colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = t
 	Send {escape} ;in case you end up inside the "delete" right click menu from the timeline
 	;MouseClick, left ;notice how this is commented out. I deemed it inferior to using ESCAPE.
 }
-else if (PremiereSequenceCheck != PremiereSequenceWindow && colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = timeline3 || colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7)
-	sendinput {Rbutton} ;this is to make up for the lack of a ~ in front of Rbutton. ... ~Rbutton. It allows the command to pass through, but only if the above conditions were NOT met.
 else
 	sendinput {Rbutton}
 theEnd:
@@ -126,6 +130,52 @@ if GetKeyState("MButton", "P") = 1
 }
 theEnd2:
 Return
+
+
+IsTimelineColor(colorr) {
+	global timeline0, timeline1, timeline2, timeline3, timeline4, timeline5, timeline6, timeline7
+	return (colorr = timeline0 || colorr = timeline1 || colorr = timeline2 || colorr = timeline3 || colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7)
+}
+
+UpdateTimelinePanelClassNN() {
+	global PremiereTimelinePanelClassNN
+
+	MouseGetPos, mouseX, mouseY, hoveredWindowID, hoveredClassNN
+	MouseGetPos, mouseX, mouseY, hoveredWindowID, hoveredControlHwnd, 2
+	if (!hoveredClassNN || !hoveredControlHwnd)
+		return ""
+
+	WinGetPos, hoveredX, hoveredY, hoveredW, hoveredH, ahk_id %hoveredControlHwnd%
+	if IsTimelinePanelBounds(hoveredX, hoveredY, hoveredW, hoveredH)
+	{
+		PremiereTimelinePanelClassNN := hoveredClassNN
+		return PremiereTimelinePanelClassNN
+	}
+
+	return ""
+}
+
+IsHoveringTimelinePanel(hoveredClassNN) {
+	global PremiereTimelinePanelClassNN
+
+	if (PremiereTimelinePanelClassNN = "" || hoveredClassNN != PremiereTimelinePanelClassNN)
+		return 0
+
+	MouseGetPos, mouseX, mouseY, hoveredWindowID, hoveredControlHwnd, 2
+	if (!hoveredControlHwnd)
+		return 0
+
+	WinGetPos, hoveredX, hoveredY, hoveredW, hoveredH, ahk_id %hoveredControlHwnd%
+	return IsTimelinePanelBounds(hoveredX, hoveredY, hoveredW, hoveredH)
+}
+
+IsTimelinePanelBounds(controlX, controlY, controlW, controlH) {
+	global timelinePanelTargetX, timelinePanelTargetY, timelinePanelTargetW, timelinePanelTargetH, timelinePanelTolerance
+	return (Abs(controlX - timelinePanelTargetX) <= timelinePanelTolerance
+		&& Abs(controlY - timelinePanelTargetY) <= timelinePanelTolerance
+		&& Abs(controlW - timelinePanelTargetW) <= timelinePanelTolerance
+		&& Abs(controlH - timelinePanelTargetH) <= timelinePanelTolerance)
+}
 
 
 
