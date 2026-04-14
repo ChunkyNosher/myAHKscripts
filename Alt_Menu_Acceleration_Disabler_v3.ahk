@@ -22,7 +22,8 @@ Microsoft Word
 ahk_exe Overwatch.exe
 ahk_exe GeometryDash.exe
 ahk_exe OneCommander.exe
-ahk_exe WindowsTerminal.exe"
+ahk_exe WindowsTerminal.exe
+ahk_exe zen.exe"
 )
 
 SetTimer, CheckActiveWindow, 100  ; Check every second
