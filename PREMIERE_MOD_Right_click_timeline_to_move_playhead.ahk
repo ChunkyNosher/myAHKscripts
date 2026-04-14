@@ -62,7 +62,7 @@ if (IsTimelineColor(colorr) && IsHoveringTimelinePanel(PremiereSequenceCheck))
 	cleanupEscapeCount := 1
 	Click, middle
 	Sleep, 10
-	if (colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7) ;these are the timeline colors of a selected clip or blank space, in or outside of in/out points.
+	if (colorr = timeline4 || colorr = timeline5 || colorr = timeline6 || colorr = timeline7 || colorr = timeline2) ;these are the timeline colors of a selected clip or blank space, in or outside of in/out points.
 		send {ESC} ;in Premiere 13.0, ESCAPE will now deselect clips on the timeline, in addition to its other uses. i think it is good ot use here, now. But you can swap this out with CTRL SHIFT D if you like.
 	;send ^!d ;in Premiere, set CTRL ALT D to "DESELECT ALL"
 	;BREAKTHROUGH -- it looks like a middle mouse click will BRING FOCUS TO a panel without doing ANYTHING ELSE like selecting or going through tabs or anything. Unfortunately, i still can't know with AHK which panel is already in focus.
