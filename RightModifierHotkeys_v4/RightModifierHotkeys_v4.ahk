@@ -26,7 +26,11 @@ App_Boot() {
     }
 
     store := BindingStore(A_ScriptDir "\RightModifierHotkeys_v4.config.json", A_ScriptDir "\RightModifierHotkeys_v4.defaults.json")
-    registry := ActionRegistry(A_ScriptDir "\RightModifierHotkeys_v4.actions.json", store)
+    registry := ActionRegistry(A_ScriptDir "\RightModifierHotkeys_v4.actions.json", store, A_ScriptDir "\RightModifierHotkeys_v4.actions.defaults.json")
+    warningMessage := registry.GetLoadWarning()
+    if (warningMessage != "") {
+        MsgBox(warningMessage, "Action Database Repaired", "Icon!")
+    }
 
     engine := HotkeyEngine(store, registry)
     engine.Install()

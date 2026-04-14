@@ -1,13 +1,15 @@
 #Requires AutoHotkey v2.0
 
 class ActionRegistry {
-    __New(databasePath := "", backupStore := "") {
+    __New(databasePath := "", backupStore := "", defaultsPath := "") {
         this.databasePath := databasePath
         this.backupStore := backupStore
+        this.defaultsPath := defaultsPath
         this.actionDoc := Schema.CreateActionDocument()
         this.actions := Map()
         this.callbacks := Map()
         this.batchPids := Map()
+        this.loadWarningMessage := ""
 
         if (this.databasePath != "") {
             this.Reload()
@@ -28,6 +30,8 @@ class ActionRegistry {
     }
 
     Reload() {
+        this.loadWarningMessage := ""
+
         if (this.databasePath = "") {
             this.actionDoc := Schema.CreateActionDocument()
             this.actions := Map()
@@ -35,12 +39,16 @@ class ActionRegistry {
         }
 
         if !FileExist(this.databasePath) {
-            this.WriteDocument(this.databasePath, Schema.CreateActionDocument())
+            this.WriteDocument(this.databasePath, this.LoadDefaultDocument())
         }
 
-        this.actionDoc := this.LoadDocument(this.databasePath)
+        this.actionDoc := this.LoadActionDocument()
         this.IndexActions()
         return this.actions
+    }
+
+    GetLoadWarning() {
+        return this.loadWarningMessage
     }
 
     GetActionDatabasePath() {
@@ -200,6 +208,36 @@ class ActionRegistry {
 
     LoadDocument(path) {
         return this.ParseDocumentText(FileRead(path, "UTF-8"))
+    }
+
+    LoadDefaultDocument() {
+        if (this.defaultsPath != "" && FileExist(this.defaultsPath)) {
+            return this.LoadDocument(this.defaultsPath)
+        }
+
+        return Schema.CreateActionDocument()
+    }
+
+    LoadActionDocument() {
+        try {
+            return this.LoadDocument(this.databasePath)
+        } catch as err {
+            backupPath := ""
+            if FileExist(this.databasePath) && IsObject(this.backupStore) && HasMethod(this.backupStore, "CreateBackup") {
+                backupPath := this.backupStore.CreateBackup(this.databasePath, "actions-invalid")
+            }
+
+            repaired := this.LoadDefaultDocument()
+            this.WriteDocument(this.databasePath, repaired)
+
+            this.loadWarningMessage := "Action database JSON was invalid and has been reset: " this.databasePath
+            if (backupPath != "") {
+                this.loadWarningMessage .= "`nBackup: " backupPath
+            }
+            this.loadWarningMessage .= "`nOriginal error: " err.Message
+
+            return repaired
+        }
     }
 
     ParseDocumentText(rawText) {
