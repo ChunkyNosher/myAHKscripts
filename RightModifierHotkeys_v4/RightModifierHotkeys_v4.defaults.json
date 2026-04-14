@@ -1,0 +1,238 @@
+{
+  "schemaVersion": 1,
+  "modifiers": [
+    { "id": "RCtrl", "label": "Right Ctrl" },
+    { "id": "RAlt", "label": "Right Alt" },
+    { "id": "RShift", "label": "Right Shift" },
+    { "id": "RCtrl_RAlt", "label": "Right Ctrl + Right Alt" },
+    { "id": "RCtrl_RShift", "label": "Right Ctrl + Right Shift" },
+    { "id": "RAlt_RShift", "label": "Right Alt + Right Shift" },
+    { "id": "RCtrl_RAlt_RShift", "label": "Right Ctrl + Right Alt + Right Shift" }
+  ],
+  "keys": [
+    { "id": "SC002", "hotkey": "SC002", "label": "1", "group": "Number Row" },
+    { "id": "SC003", "hotkey": "SC003", "label": "2", "group": "Number Row" },
+    { "id": "SC004", "hotkey": "SC004", "label": "3", "group": "Number Row" },
+    { "id": "SC005", "hotkey": "SC005", "label": "4", "group": "Number Row" },
+    { "id": "SC006", "hotkey": "SC006", "label": "5", "group": "Number Row" },
+    { "id": "SC007", "hotkey": "SC007", "label": "6", "group": "Number Row" },
+    { "id": "SC008", "hotkey": "SC008", "label": "7", "group": "Number Row" },
+    { "id": "SC009", "hotkey": "SC009", "label": "8", "group": "Number Row" },
+    { "id": "SC00A", "hotkey": "SC00A", "label": "9", "group": "Number Row" },
+    { "id": "SC00B", "hotkey": "SC00B", "label": "0", "group": "Number Row" },
+
+    { "id": "SC01E", "hotkey": "SC01E", "label": "A", "group": "Letters" },
+    { "id": "SC030", "hotkey": "SC030", "label": "B", "group": "Letters" },
+    { "id": "SC02E", "hotkey": "SC02E", "label": "C", "group": "Letters" },
+    { "id": "SC020", "hotkey": "SC020", "label": "D", "group": "Letters" },
+    { "id": "SC012", "hotkey": "SC012", "label": "E", "group": "Letters" },
+    { "id": "SC021", "hotkey": "SC021", "label": "F", "group": "Letters" },
+    { "id": "SC022", "hotkey": "SC022", "label": "G", "group": "Letters" },
+    { "id": "SC023", "hotkey": "SC023", "label": "H", "group": "Letters" },
+    { "id": "SC017", "hotkey": "SC017", "label": "I", "group": "Letters" },
+    { "id": "SC024", "hotkey": "SC024", "label": "J", "group": "Letters" },
+    { "id": "SC025", "hotkey": "SC025", "label": "K", "group": "Letters" },
+    { "id": "SC026", "hotkey": "SC026", "label": "L", "group": "Letters" },
+    { "id": "SC032", "hotkey": "SC032", "label": "M", "group": "Letters" },
+    { "id": "SC031", "hotkey": "SC031", "label": "N", "group": "Letters" },
+    { "id": "SC018", "hotkey": "SC018", "label": "O", "group": "Letters" },
+    { "id": "SC019", "hotkey": "SC019", "label": "P", "group": "Letters" },
+    { "id": "SC010", "hotkey": "SC010", "label": "Q", "group": "Letters" },
+    { "id": "SC013", "hotkey": "SC013", "label": "R", "group": "Letters" },
+    { "id": "SC01F", "hotkey": "SC01F", "label": "S", "group": "Letters" },
+    { "id": "SC014", "hotkey": "SC014", "label": "T", "group": "Letters" },
+    { "id": "SC016", "hotkey": "SC016", "label": "U", "group": "Letters" },
+    { "id": "SC02F", "hotkey": "SC02F", "label": "V", "group": "Letters" },
+    { "id": "SC011", "hotkey": "SC011", "label": "W", "group": "Letters" },
+    { "id": "SC02D", "hotkey": "SC02D", "label": "X", "group": "Letters" },
+    { "id": "SC015", "hotkey": "SC015", "label": "Y", "group": "Letters" },
+    { "id": "SC02C", "hotkey": "SC02C", "label": "Z", "group": "Letters" },
+
+    { "id": "SC03B", "hotkey": "SC03B", "label": "F1", "group": "Function Keys" },
+    { "id": "SC03C", "hotkey": "SC03C", "label": "F2", "group": "Function Keys" },
+    { "id": "SC03D", "hotkey": "SC03D", "label": "F3", "group": "Function Keys" },
+    { "id": "SC03E", "hotkey": "SC03E", "label": "F4", "group": "Function Keys" },
+    { "id": "SC03F", "hotkey": "SC03F", "label": "F5", "group": "Function Keys" },
+    { "id": "SC040", "hotkey": "SC040", "label": "F6", "group": "Function Keys" },
+    { "id": "SC041", "hotkey": "SC041", "label": "F7", "group": "Function Keys" },
+    { "id": "SC042", "hotkey": "SC042", "label": "F8", "group": "Function Keys" },
+    { "id": "SC043", "hotkey": "SC043", "label": "F9", "group": "Function Keys" },
+    { "id": "SC044", "hotkey": "SC044", "label": "F10", "group": "Function Keys" },
+    { "id": "SC057", "hotkey": "SC057", "label": "F11", "group": "Function Keys" },
+    { "id": "SC058", "hotkey": "SC058", "label": "F12", "group": "Function Keys" },
+
+    { "id": "SC027", "hotkey": "SC027", "label": "Semicolon", "group": "Symbols" },
+    { "id": "SC033", "hotkey": "SC033", "label": "Comma", "group": "Symbols" },
+    { "id": "SC034", "hotkey": "SC034", "label": "Period", "group": "Symbols" },
+    { "id": "SC035", "hotkey": "SC035", "label": "Slash", "group": "Symbols" },
+    { "id": "SC01A", "hotkey": "SC01A", "label": "Left Bracket", "group": "Symbols" },
+    { "id": "SC01B", "hotkey": "SC01B", "label": "Right Bracket", "group": "Symbols" },
+    { "id": "SC02B", "hotkey": "SC02B", "label": "Backslash", "group": "Symbols" },
+    { "id": "SC028", "hotkey": "SC028", "label": "Apostrophe", "group": "Symbols" },
+    { "id": "SC00C", "hotkey": "SC00C", "label": "Minus", "group": "Symbols" },
+    { "id": "SC00D", "hotkey": "SC00D", "label": "Equals", "group": "Symbols" },
+    { "id": "SC029", "hotkey": "SC029", "label": "Backtick", "group": "Symbols" },
+
+    { "id": "SC148", "hotkey": "SC148", "label": "Up", "group": "Navigation" },
+    { "id": "SC150", "hotkey": "SC150", "label": "Down", "group": "Navigation" },
+    { "id": "SC14B", "hotkey": "SC14B", "label": "Left", "group": "Navigation" },
+    { "id": "SC14D", "hotkey": "SC14D", "label": "Right", "group": "Navigation" },
+    { "id": "SC147", "hotkey": "SC147", "label": "Home", "group": "Navigation" },
+    { "id": "SC14F", "hotkey": "SC14F", "label": "End", "group": "Navigation" },
+    { "id": "SC149", "hotkey": "SC149", "label": "Page Up", "group": "Navigation" },
+    { "id": "SC151", "hotkey": "SC151", "label": "Page Down", "group": "Navigation" },
+    { "id": "SC152", "hotkey": "SC152", "label": "Insert", "group": "Navigation" },
+    { "id": "SC153", "hotkey": "SC153", "label": "Delete", "group": "Navigation" },
+
+    { "id": "SC052", "hotkey": "SC052", "label": "Numpad 0", "group": "Numpad" },
+    { "id": "SC04F", "hotkey": "SC04F", "label": "Numpad 1", "group": "Numpad" },
+    { "id": "SC050", "hotkey": "SC050", "label": "Numpad 2", "group": "Numpad" },
+    { "id": "SC051", "hotkey": "SC051", "label": "Numpad 3", "group": "Numpad" },
+    { "id": "SC04B", "hotkey": "SC04B", "label": "Numpad 4", "group": "Numpad" },
+    { "id": "SC04C", "hotkey": "SC04C", "label": "Numpad 5", "group": "Numpad" },
+    { "id": "SC04D", "hotkey": "SC04D", "label": "Numpad 6", "group": "Numpad" },
+    { "id": "SC047", "hotkey": "SC047", "label": "Numpad 7", "group": "Numpad" },
+    { "id": "SC048", "hotkey": "SC048", "label": "Numpad 8", "group": "Numpad" },
+    { "id": "SC049", "hotkey": "SC049", "label": "Numpad 9", "group": "Numpad" },
+    { "id": "SC053", "hotkey": "SC053", "label": "Numpad Decimal", "group": "Numpad" },
+    { "id": "NumpadEnter", "hotkey": "NumpadEnter", "label": "Numpad Enter", "group": "Numpad" },
+    { "id": "SC04E", "hotkey": "SC04E", "label": "Numpad Add", "group": "Numpad" },
+    { "id": "SC04A", "hotkey": "SC04A", "label": "Numpad Subtract", "group": "Numpad" },
+    { "id": "SC037", "hotkey": "SC037", "label": "Numpad Multiply", "group": "Numpad" },
+    { "id": "NumpadDiv", "hotkey": "NumpadDiv", "label": "Numpad Divide", "group": "Numpad" }
+  ],
+  "bindings": {
+    "SC002": {
+      "RCtrl": { "type": "send_keys", "value": "^{F14}" },
+      "RAlt": { "type": "send_keys", "value": "!{F14}" },
+      "RShift": { "type": "send_keys", "value": "+{F14}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F14}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F14}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F14}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F14}" }
+    },
+    "SC003": {
+      "RCtrl": { "type": "send_keys", "value": "^{F15}" },
+      "RAlt": { "type": "send_keys", "value": "!{F15}" },
+      "RShift": { "type": "send_keys", "value": "+{F15}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F15}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F15}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F15}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F15}" }
+    },
+    "SC004": {
+      "RCtrl": { "type": "send_keys", "value": "^{F16}" },
+      "RAlt": { "type": "send_keys", "value": "!{F16}" },
+      "RShift": { "type": "send_keys", "value": "+{F16}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F16}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F16}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F16}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F16}" }
+    },
+    "SC005": {
+      "RCtrl": { "type": "send_keys", "value": "^{F17}" },
+      "RAlt": { "type": "send_keys", "value": "!{F17}" },
+      "RShift": { "type": "send_keys", "value": "+{F17}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F17}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F17}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F17}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F17}" }
+    },
+    "SC006": {
+      "RCtrl": { "type": "send_keys", "value": "^{F18}" },
+      "RAlt": { "type": "send_keys", "value": "!{F18}" },
+      "RShift": { "type": "send_keys", "value": "+{F18}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F18}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F18}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F18}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F18}" }
+    },
+    "SC007": {
+      "RCtrl": { "type": "send_keys", "value": "^{F19}" },
+      "RAlt": { "type": "send_keys", "value": "!{F19}" },
+      "RShift": { "type": "send_keys", "value": "+{F19}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F19}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F19}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F19}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F19}" }
+    },
+    "SC008": {
+      "RCtrl": { "type": "send_keys", "value": "^{F20}" },
+      "RAlt": { "type": "send_keys", "value": "!{F20}" },
+      "RShift": { "type": "send_keys", "value": "+{F20}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F20}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F20}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F20}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F20}" }
+    },
+    "SC009": {
+      "RCtrl": { "type": "send_keys", "value": "^{F21}" },
+      "RAlt": { "type": "send_keys", "value": "!{F21}" },
+      "RShift": { "type": "send_keys", "value": "+{F21}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F21}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F21}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F21}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F21}" }
+    },
+    "SC00A": {
+      "RCtrl": { "type": "send_keys", "value": "^{F22}" },
+      "RAlt": { "type": "send_keys", "value": "!{F22}" },
+      "RShift": { "type": "send_keys", "value": "+{F22}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F22}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F22}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F22}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F22}" }
+    },
+    "SC00B": {
+      "RCtrl": { "type": "send_keys", "value": "^{F13}" },
+      "RAlt": { "type": "send_keys", "value": "!{F13}" },
+      "RShift": { "type": "send_keys", "value": "+{F13}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F13}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F13}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F13}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F13}" }
+    },
+    "SC030": {
+      "RCtrl": { "type": "action", "actionId": "launch_zen" }
+    },
+    "SC020": {
+      "RShift": { "type": "send_keys", "value": "^c" }
+    },
+    "SC021": {
+      "RCtrl": { "type": "action", "actionId": "launch_focusrite" }
+    },
+    "SC032": {
+      "RCtrl": { "type": "action", "actionId": "launch_one_commander" },
+      "RAlt": { "type": "send_keys", "value": "!{F23}" },
+      "RShift": { "type": "send_keys", "value": "+{F23}" },
+      "RCtrl_RShift": { "type": "action", "actionId": "open_all_folders" }
+    },
+    "SC031": {
+      "RCtrl": { "type": "action", "actionId": "launch_premiere" },
+      "RShift": { "type": "action", "actionId": "activate_notepad_plus_plus" }
+    },
+    "SC019": {
+      "RCtrl": { "type": "action", "actionId": "activate_notepad_plus_plus" }
+    },
+    "SC013": {
+      "RCtrl": { "type": "action", "actionId": "toggle_random_wiggler_premiere" }
+    },
+    "SC014": {
+      "RCtrl": { "type": "action", "actionId": "toggle_always_on_top" }
+    },
+    "SC02F": {
+      "RCtrl": { "type": "action", "actionId": "activate_vscode" }
+    },
+    "SC015": {
+      "RCtrl": { "type": "action", "actionId": "launch_yt_dlp_batch" },
+      "RAlt": { "type": "action", "actionId": "launch_yt_dlp_batch_checker" },
+      "RShift": { "type": "send_text", "value": "yt-dlp -t mp4" }
+    },
+    "SC028": {
+      "RShift": { "type": "send_keys", "value": "^x" }
+    },
+    "SC14B": {
+      "RCtrl": { "type": "action", "actionId": "slide_in_from_left" }
+    }
+  }
+}
