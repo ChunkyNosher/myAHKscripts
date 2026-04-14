@@ -304,7 +304,11 @@ LaunchPremiere() {
 LaunchOneCommander() {
     IfWinNotExist, ahk_exe OneCommander.exe
         Run, OneCommander.exe
-    WinActivate, ahk_exe OneCommander.exe
+    GroupAdd, ChunkyFiles, ahk_exe OneCommander.exe
+    if WinActive("ahk_exe OneCommander.exe")
+        GroupActivate, ChunkyFiles, r
+    else
+        WinActivate, ahk_exe OneCommander.exe
 }
 
 ActivateNotepadPlusPlus() {
@@ -316,7 +320,11 @@ ActivateNotepadPlusPlus() {
 ActivateVSCode() {
     IfWinNotExist, ahk_exe Code - Insiders.exe
         Run, Visual Studio Code - Insiders
-    WinActivate, ahk_exe Code - Insiders.exe
+    GroupAdd, ChunkyVSCodeWindows, ahk_exe Code - Insiders.exe
+    if WinActive("ahk_exe Code - Insiders.exe")
+        GroupActivate, ChunkyVSCodeWindows, r
+    else
+        WinActivate, ahk_exe Code - Insiders.exe
 }
 
 ToggleRandomWigglerPremiere() {
