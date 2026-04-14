@@ -41,8 +41,7 @@ timeline7 = 0x191919 ;the color of a SELECTED blank space on the timeline, IN th
 
 timeline8 = 0x1c1c1c ;NEW color as of 2024, of the NON TARGETED space between in/out points. UNFORTUNATELY, this is also the same color as the BINS in areas where there are no items, meaning now you can't right click to make new items and folders and stuff, and therefore, I must remove it from the list below. SUPER LAME.
 
-PremiereSequenceWindow := "DroverLord - Window Class83,DroverLord - Window Class84,DroverLord - Window Class85,DroverLord - Window Class86,DroverLord - Window Class87,DroverLord - Window Class65,DroverLord - Window Class55,DroverLord - Window Class53"
-
+PremiereSequenceWindow := ["DroverLord - Window Class83, DroverLord - Window Class84, DroverLord - Window Class85, DroverLord - Window Class86, DroverLord - Window Class87, DroverLord - Window Class65, DroverLord - Window Class55, DroverLord - Window Class53"]
 
 
 #IfWinActive ahk_exe Adobe Premiere Pro.exe ;exact name was gotten from windowspy
