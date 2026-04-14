@@ -28,12 +28,12 @@ ApplySlidePreset(presetName) {
         Send("{BS}")
         SendText(presetName)
 
-        if !Premiere_WaitForCaret() {
+        if !Premiere_WaitForCaret(&caretX, &caretY) {
             return false
         }
 
-        MouseMove(A_CaretX, A_CaretY)
-        MouseMove(A_CaretX + 41, A_CaretY + 63)
+        MouseMove(caretX, caretY)
+        MouseMove(caretX + 41, caretY + 63)
         MouseGetPos(&fxX, &fxY)
         MouseClickDrag("L", fxX, fxY, origX, origY, 0)
         return true
@@ -61,17 +61,19 @@ Premiere_RegisterAction(registry, actionId, callback) {
     throw TypeError("Registry must expose Register() or be a Map.")
 }
 
-Premiere_WaitForCaret(maxChecks := 40, sleepMs := 33) {
-    if A_CaretX != "" {
+Premiere_WaitForCaret(&caretX := "", &caretY := "", maxChecks := 40, sleepMs := 33) {
+    if CaretGetPos(&caretX, &caretY) {
         return true
     }
 
     loop maxChecks {
         Sleep(sleepMs)
-        if A_CaretX != "" {
+        if CaretGetPos(&caretX, &caretY) {
             return true
         }
     }
 
+    caretX := ""
+    caretY := ""
     return false
 }
