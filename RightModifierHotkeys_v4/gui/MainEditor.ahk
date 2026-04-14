@@ -24,10 +24,14 @@ class MainEditor {
     __New(app) {
         this.app := app
         this.store := app["store"]
+        this.registry := app["registry"]
         this.modifiers := this.store.GetModifiers()
         this.actionTypes := Schema.BindingTypes
-        this.userActionsPath := A_ScriptDir "\\RightModifierHotkeys_v4.user-actions.ahk"
+        this.actionsPath := this.registry.GetActionDatabasePath()
         this.selectedKeyId := ""
+        this.selectedModifierId := this.modifiers.Length ? this.modifiers[1]["id"] : ""
+        this.cellEditRowNumber := 0
+        this.cellEditColumnNumber := 0
         this.filteredRows := []
         this.BuildGui()
         this.ReloadFromDisk()
@@ -43,7 +47,7 @@ class MainEditor {
         this.gui.OnEvent("Close", ObjBindMethod(this, "OnClose"))
         this.gui.OnEvent("Escape", ObjBindMethod(this, "OnClose"))
 
-        this.tabs := this.gui.AddTab3("x10 y10 w1298 h700", ["Mappings", "Custom Actions", "Settings"])
+        this.tabs := this.gui.AddTab3("x10 y10 w1298 h700", ["Mappings", "Action Database", "Settings"])
 
         this.tabs.UseTab(1)
         this.gui.AddText("x24 y48 w40 h23 +0x200", "Filter")
@@ -57,12 +61,14 @@ class MainEditor {
 
         this.mappingList := this.gui.AddListView("x24 y78 w970 h560 -Multi Grid", headers)
         this.mappingList.OnEvent("ItemSelect", ObjBindMethod(this, "OnMappingRowSelect"))
+        this.mappingList.OnNotify(-2, ObjBindMethod(this, "OnMappingListClickNotify"))
 
         this.gui.AddGroupBox("x1008 y78 w278 h560", "Binding Editor")
         this.selectedKeyText := this.gui.AddText("x1022 y108 w248 h40", "Select a key from the mappings list.")
         this.gui.AddText("x1022 y162 w64 h23 +0x200", "Modifier")
-        this.modifierDropDown := this.gui.AddDropDownList("x1092 y160 w178", this.GetModifierLabels())
+        this.modifierDropDown := this.gui.AddDropDownList("x1092 y160 w178 Choose1", this.GetModifierLabels())
         this.modifierDropDown.OnEvent("Change", ObjBindMethod(this, "OnModifierChanged"))
+        this.modifierDropDown.Enabled := false
 
         this.gui.AddText("x1022 y202 w64 h23 +0x200", "Type")
             this.typeDropDown := this.gui.AddDropDownList("x1092 y200 w178 Choose1", this.actionTypes)
@@ -81,18 +87,18 @@ class MainEditor {
         this.revertOverrideButton.OnEvent("Click", ObjBindMethod(this, "OnRevertOverride"))
 
         this.tabs.UseTab(2)
-        this.userActionsEdit := this.gui.AddEdit("x24 y48 w1246 h510 WantTab +Multi")
+        this.actionDatabaseEdit := this.gui.AddEdit("x24 y48 w1246 h510 WantTab +Multi")
 
         this.validateActionsButton := this.gui.AddButton("x24 y570 w110 h30", "Validate")
-        this.validateActionsButton.OnEvent("Click", ObjBindMethod(this, "OnValidateUserActions"))
+        this.validateActionsButton.OnEvent("Click", ObjBindMethod(this, "OnValidateActionDatabase"))
 
         this.saveActionsButton := this.gui.AddButton("x146 y570 w110 h30", "Save")
-        this.saveActionsButton.OnEvent("Click", ObjBindMethod(this, "OnSaveUserActions"))
+        this.saveActionsButton.OnEvent("Click", ObjBindMethod(this, "OnSaveActionDatabase"))
 
         this.reloadActionsButton := this.gui.AddButton("x268 y570 w140 h30", "Reload From Disk")
-        this.reloadActionsButton.OnEvent("Click", ObjBindMethod(this, "OnReloadUserActions"))
+        this.reloadActionsButton.OnEvent("Click", ObjBindMethod(this, "OnReloadActionDatabase"))
 
-        this.userActionsOutput := this.gui.AddEdit("x24 y612 w1246 h90 ReadOnly +Multi")
+        this.actionDatabaseOutput := this.gui.AddEdit("x24 y612 w1246 h90 ReadOnly +Multi")
 
         this.tabs.UseTab(3)
         this.gui.AddText("x24 y54 w140 h23 +0x200", "Config JSON")
@@ -101,8 +107,8 @@ class MainEditor {
         this.gui.AddText("x24 y94 w140 h23 +0x200", "Defaults JSON")
         this.defaultsPathEdit := this.gui.AddEdit("x170 y90 w1100 h24 ReadOnly", this.store.GetDefaultsPath())
 
-        this.gui.AddText("x24 y134 w140 h23 +0x200", "User Actions")
-        this.userActionsPathEdit := this.gui.AddEdit("x170 y130 w1100 h24 ReadOnly", this.userActionsPath)
+        this.gui.AddText("x24 y134 w140 h23 +0x200", "Action Database")
+        this.actionsPathEdit := this.gui.AddEdit("x170 y130 w1100 h24 ReadOnly", this.actionsPath)
 
         this.gui.AddText("x24 y174 w140 h23 +0x200", "Backup Folder")
         this.backupPathEdit := this.gui.AddEdit("x170 y170 w1100 h24 ReadOnly", this.store.GetBackupDir())
@@ -115,13 +121,21 @@ class MainEditor {
 
         this.tabs.UseTab()
 
+        this.cellEdit := this.gui.AddEdit("x0 y0 w0 h23 Hidden")
+        this.cellEdit.OnEvent("LoseFocus", ObjBindMethod(this, "OnCellEditLoseFocus"))
+
+        this.defaultButton := this.gui.AddButton("x0 y0 w0 h0 Hidden Default", "Commit")
+        this.defaultButton.OnEvent("Click", ObjBindMethod(this, "OnDefaultButtonClick"))
+
         this.statusText := this.gui.AddText("x18 y720 w1288 h23 +0x200", "Ready.")
     }
 
     ReloadFromDisk() {
+        this.HideCellEdit()
         this.store.Reload()
-        this.userActionsEdit.Value := FileRead(this.userActionsPath, "UTF-8")
-        this.userActionsOutput.Value := ""
+        this.registry.Reload()
+        this.actionDatabaseEdit.Value := FileRead(this.actionsPath, "UTF-8")
+        this.actionDatabaseOutput.Value := ""
         this.LoadMappingRows()
         this.SyncSelectedBinding()
         this.SetStatus("Editor data reloaded.")
@@ -162,10 +176,14 @@ class MainEditor {
         }
 
         if (this.filteredRows.Length > 0) {
-            this.mappingList.Modify(1, "Select Focus Vis")
+            targetRow := this.FindFilteredRowIndex(this.selectedKeyId)
+            if (targetRow = 0) {
+                targetRow := 1
+            }
+            this.mappingList.Modify(targetRow, "Select Focus Vis")
         } else {
             this.selectedKeyId := ""
-            this.selectedKeyText.Text := "No keys match the current filter."
+            this.selectedKeyText.Value := "No keys match the current filter."
             this.typeDropDown.Choose(this.FindActionTypeIndex("empty"))
             this.valueEdit.Value := ""
             this.valueEdit.Enabled := false
@@ -206,7 +224,8 @@ class MainEditor {
         }
 
         row := this.filteredRows[rowIndex]
-            this.selectedKeyText.Text := row["keyLabel"] " (" row["keyId"] ")"
+        this.selectedKeyText.Value := row["keyLabel"] " (" row["keyId"] ")"
+        this.SyncModifierIndicator()
         bindingSpec := row["bindings"][this.GetSelectedModifierId()]
         bindingType := Schema.GetBindingType(bindingSpec)
         this.typeDropDown.Choose(this.FindActionTypeIndex(bindingType))
@@ -223,9 +242,13 @@ class MainEditor {
     }
 
     GetSelectedModifierId() {
+        if (this.selectedModifierId != "") {
+            return this.selectedModifierId
+        }
+
         index := this.modifierDropDown.Value
         if (index < 1 || index > this.modifiers.Length) {
-            return this.modifiers[1]["id"]
+            return this.modifiers.Length ? this.modifiers[1]["id"] : ""
         }
 
         return this.modifiers[index]["id"]
@@ -256,6 +279,7 @@ class MainEditor {
     }
 
     OnFilterChange(*) {
+        this.HideCellEdit()
         this.LoadMappingRows()
     }
 
@@ -272,6 +296,24 @@ class MainEditor {
         this.SyncSelectedBinding()
     }
 
+    OnMappingListClickNotify(ctrl, lParam) {
+        cell := this.GetClickedCell(ctrl, lParam)
+        if !IsObject(cell) {
+            this.CommitCellEdit()
+            return
+        }
+
+        this.CommitCellEdit()
+        this.selectedKeyId := this.filteredRows[cell["row"]]["keyId"]
+        this.SetSelectedModifierByColumn(cell["column"])
+        this.mappingList.Modify(cell["row"], "Select Focus Vis")
+        this.SyncSelectedBinding()
+
+        if (cell["column"] >= 3) {
+            this.BeginCellEdit(cell["row"], cell["column"])
+        }
+    }
+
     OnModifierChanged(*) {
         this.SyncSelectedBinding()
     }
@@ -285,6 +327,8 @@ class MainEditor {
     }
 
     OnSaveBinding(*) {
+        this.HideCellEdit()
+
         if (this.selectedKeyId = "") {
             this.SetStatus("Select a key before saving.")
             return
@@ -311,11 +355,14 @@ class MainEditor {
     }
 
     OnReloadSelection(*) {
+        this.HideCellEdit()
         this.SyncSelectedBinding()
         this.SetStatus("Selection reloaded from current store state.")
     }
 
     OnRevertOverride(*) {
+        this.HideCellEdit()
+
         if (this.selectedKeyId = "") {
             this.SetStatus("Select a key before reverting.")
             return
@@ -338,43 +385,43 @@ class MainEditor {
         }
     }
 
-    OnValidateUserActions(*) {
-        result := this.ValidateUserActions(this.userActionsEdit.Value)
-        this.userActionsOutput.Value := result["message"]
-        this.SetStatus(result["ok"] ? "User actions validation passed." : "User actions validation failed.")
+    OnValidateActionDatabase(*) {
+        result := this.registry.ValidateActionDatabaseText(this.actionDatabaseEdit.Value)
+        this.actionDatabaseOutput.Value := result["message"]
+        this.SetStatus(result["ok"] ? "Action database validation passed." : "Action database validation failed.")
     }
 
-    OnSaveUserActions(*) {
-        result := this.ValidateUserActions(this.userActionsEdit.Value)
-        this.userActionsOutput.Value := result["message"]
+    OnSaveActionDatabase(*) {
+        result := this.registry.ValidateActionDatabaseText(this.actionDatabaseEdit.Value)
+        this.actionDatabaseOutput.Value := result["message"]
         if !result["ok"] {
-            this.SetStatus("User actions were not saved.")
+            this.SetStatus("Action database was not saved.")
             return
         }
 
         try {
-            backupPath := this.store.CreateBackup(this.userActionsPath, "user-actions")
-            this.WriteTextFile(this.userActionsPath, this.userActionsEdit.Value)
-            this.SetStatus("User actions saved.")
-            this.userActionsOutput.Value := "Saved user actions." (backupPath != "" ? "`r`nBackup: " backupPath : "")
-            if (MsgBox("User actions saved. Reload RightModifierHotkeys v4 now?", "RightModifierHotkeys v4", "YN Iconi") = "Yes") {
-                Reload()
-            }
+            saveResult := this.registry.SaveActionDatabaseText(this.actionDatabaseEdit.Value)
+            this.actionDatabaseEdit.Value := FileRead(this.actionsPath, "UTF-8")
+            this.actionDatabaseOutput.Value := "Saved action database." (saveResult["backupPath"] != "" ? "`r`nBackup: " saveResult["backupPath"] : "")
+            this.SetStatus("Action database saved.")
         } catch as err {
-            MsgBox(err.Message, "Save User Actions Failed", "Iconx")
-            this.SetStatus("User actions save failed.")
+            MsgBox(err.Message, "Save Action Database Failed", "Iconx")
+            this.SetStatus("Action database save failed.")
         }
     }
 
-    OnReloadUserActions(*) {
-        this.userActionsEdit.Value := FileRead(this.userActionsPath, "UTF-8")
-        this.userActionsOutput.Value := "Reloaded user-actions from disk."
-        this.SetStatus("User actions reloaded from disk.")
+    OnReloadActionDatabase(*) {
+        this.registry.Reload()
+        this.actionDatabaseEdit.Value := FileRead(this.actionsPath, "UTF-8")
+        this.actionDatabaseOutput.Value := "Reloaded action database from disk."
+        this.SetStatus("Action database reloaded from disk.")
     }
 
     OnReloadConfig(*) {
         try {
+            this.HideCellEdit()
             this.store.Reload()
+            this.registry.Reload()
             this.LoadMappingRows()
             this.SyncSelectedBinding()
             this.SetStatus("Config reloaded from disk.")
@@ -395,49 +442,183 @@ class MainEditor {
     }
 
     SetStatus(message) {
-        this.statusText.Text := message
+        this.statusText.Value := message
     }
 
-    ValidateUserActions(content) {
-        wrapperPath := A_Temp "\\RightModifierHotkeys_v4_user_actions_validate_" A_TickCount ".ahk"
-        outputPath := A_Temp "\\RightModifierHotkeys_v4_user_actions_validate_" A_TickCount ".log"
-        wrapper := "#Requires AutoHotkey v2.0`r`n"
-        wrapper .= "class ValidationRegistry {`r`n"
-        wrapper .= "    Register(actionId, callback) {`r`n"
-        wrapper .= "        return callback`r`n"
-        wrapper .= "    }`r`n"
-        wrapper .= "}`r`n`r`n"
-        wrapper .= content
-        wrapper .= "`r`n`r`nregistry := ValidationRegistry()`r`n"
-        wrapper .= "RegisterUserActions(registry)`r`n"
-        wrapper .= "ExitApp`r`n"
+    SyncModifierIndicator() {
+        modifierId := this.GetSelectedModifierId()
+        for index, modifierInfo in this.modifiers {
+            if (modifierInfo["id"] = modifierId) {
+                this.modifierDropDown.Choose(index)
+                return
+            }
+        }
+    }
+
+    SetSelectedModifierByColumn(columnNumber) {
+        modifierIndex := columnNumber - 2
+        if (modifierIndex < 1 || modifierIndex > this.modifiers.Length) {
+            this.selectedModifierId := this.modifiers.Length ? this.modifiers[1]["id"] : ""
+            return
+        }
+
+        this.selectedModifierId := this.modifiers[modifierIndex]["id"]
+        this.modifierDropDown.Choose(modifierIndex)
+    }
+
+    GetClickedCell(ctrl, lParam) {
+        if (ctrl != this.mappingList) {
+            return ""
+        }
+
+        pointOffset := (A_PtrSize = 8) ? 44 : 32
+        hitX := NumGet(lParam + pointOffset, "Int")
+        hitY := NumGet(lParam + pointOffset + 4, "Int")
+
+        hitInfo := Buffer(24, 0)
+        NumPut("Int", hitX, hitInfo, 0)
+        NumPut("Int", hitY, hitInfo, 4)
+
+        SendMessage(0x1039, 0, hitInfo.Ptr, ctrl)
+        rowIndex := NumGet(hitInfo, 12, "Int") + 1
+        columnIndex := NumGet(hitInfo, 16, "Int") + 1
+
+        if (rowIndex < 1 || rowIndex > this.filteredRows.Length) {
+            return ""
+        }
+
+        if (columnIndex < 1 || columnIndex > this.mappingList.GetCount("Column")) {
+            return ""
+        }
+
+        return Map(
+            "row", rowIndex,
+            "column", columnIndex
+        )
+    }
+
+    GetCellRect(rowNumber, columnNumber) {
+        rect := Buffer(16, 0)
+        NumPut("Int", 0, rect, 0)
+        NumPut("Int", columnNumber - 1, rect, 4)
+
+        if !SendMessage(0x1038, rowNumber - 1, rect.Ptr, this.mappingList) {
+            return ""
+        }
+
+        return Map(
+            "x", NumGet(rect, 0, "Int"),
+            "y", NumGet(rect, 4, "Int"),
+            "w", NumGet(rect, 8, "Int") - NumGet(rect, 0, "Int"),
+            "h", NumGet(rect, 12, "Int") - NumGet(rect, 4, "Int")
+        )
+    }
+
+    BeginCellEdit(rowNumber, columnNumber) {
+        cellRect := this.GetCellRect(rowNumber, columnNumber)
+        if !IsObject(cellRect) {
+            return
+        }
+
+        this.cellEditRowNumber := rowNumber
+        this.cellEditColumnNumber := columnNumber
+
+        this.mappingList.GetPos(&listX, &listY)
+        this.cellEdit.Move(listX + cellRect["x"] + 1, listY + cellRect["y"] + 1, Max(cellRect["w"] - 2, 48), Max(cellRect["h"] - 2, 22))
+        this.cellEdit.Value := this.valueEdit.Value
+        this.cellEdit.Visible := true
+        this.cellEdit.Focus()
+    }
+
+    HideCellEdit() {
+        if !IsObject(this.cellEdit) {
+            return
+        }
+
+        this.cellEdit.Visible := false
+        this.cellEditRowNumber := 0
+        this.cellEditColumnNumber := 0
+    }
+
+    OnCellEditLoseFocus(*) {
+        this.CommitCellEdit()
+    }
+
+    OnDefaultButtonClick(*) {
+        if (this.gui.FocusedCtrl = this.cellEdit) {
+            this.CommitCellEdit()
+            return
+        }
+
+        if (this.gui.FocusedCtrl = this.valueEdit) {
+            this.OnSaveBinding()
+        }
+    }
+
+    CommitCellEdit() {
+        if !this.cellEdit.Visible {
+            return
+        }
+
+        rowNumber := this.cellEditRowNumber
+        columnNumber := this.cellEditColumnNumber
+        typedValue := this.cellEdit.Value
+        this.HideCellEdit()
+
+        if (rowNumber < 1 || rowNumber > this.filteredRows.Length || columnNumber < 3) {
+            return
+        }
+
+        this.selectedKeyId := this.filteredRows[rowNumber]["keyId"]
+        this.SetSelectedModifierByColumn(columnNumber)
 
         try {
-            this.WriteTextFile(wrapperPath, wrapper)
-                quote := Chr(34)
-                command := A_ComSpec " /C " quote quote A_AhkPath quote " /ErrorStdOut=UTF-8 " quote wrapperPath quote " > " quote outputPath quote " 2>&1" quote
-            exitCode := RunWait(command, A_Temp, "Hide")
-            outputText := FileExist(outputPath) ? Trim(FileRead(outputPath, "UTF-8")) : ""
-            if (exitCode = 0) {
-                return Map("ok", true, "message", outputText != "" ? outputText : "Validation passed.")
-            }
-
-            return Map("ok", false, "message", outputText != "" ? outputText : "Validation failed with exit code " exitCode ".")
+            bindingSpec := this.BuildBindingSpecFromTypedValue(typedValue)
+            this.store.UpdateBindingSpec(this.selectedKeyId, this.GetSelectedModifierId(), bindingSpec)
+            backupPath := this.store.SaveConfig()
+            this.LoadMappingRows()
+            this.SyncSelectedBinding()
+            this.SetStatus("Saved " this.selectedKeyId " / " this.GetSelectedModifierId() (backupPath != "" ? " with backup." : "."))
         } catch as err {
-            return Map("ok", false, "message", err.Message)
-        } finally {
-            try FileDelete(wrapperPath)
-            try FileDelete(outputPath)
+            MsgBox(err.Message, "Save Binding Failed", "Iconx")
+            this.SyncSelectedBinding()
+            this.SetStatus("Binding save failed.")
         }
     }
 
-    WriteTextFile(path, text) {
-        file := FileOpen(path, "w", "UTF-8")
-        if !IsObject(file) {
-            throw Error("Unable to open file for writing: " path)
+    BuildBindingSpecFromTypedValue(rawValue) {
+        typedValue := Trim(rawValue)
+        lowered := StrLower(typedValue)
+
+        if (typedValue = "") {
+            this.typeDropDown.Choose(this.FindActionTypeIndex("empty"))
+            return Schema.CreateBindingSpec("empty")
         }
 
-        file.Write(text)
-        file.Close()
+        for _, prefix in [["action:", "action"], ["keys:", "send_keys"], ["send_keys:", "send_keys"], ["text:", "send_text"], ["send_text:", "send_text"]] {
+            if (SubStr(lowered, 1, StrLen(prefix[1])) = prefix[1]) {
+                value := LTrim(SubStr(typedValue, StrLen(prefix[1]) + 1))
+                this.typeDropDown.Choose(this.FindActionTypeIndex(prefix[2]))
+                return Schema.CreateBindingSpec(prefix[2], value)
+            }
+        }
+
+        bindingType := this.GetSelectedActionType()
+        if (bindingType = "empty") {
+            if IsObject(this.registry.GetActionRecord(typedValue)) {
+                bindingType := "action"
+            } else if this.LooksLikeSendKeys(typedValue) {
+                bindingType := "send_keys"
+            } else {
+                bindingType := "send_text"
+            }
+            this.typeDropDown.Choose(this.FindActionTypeIndex(bindingType))
+        }
+
+        return Schema.CreateBindingSpec(bindingType, typedValue)
+    }
+
+    LooksLikeSendKeys(value) {
+        return RegExMatch(value, "[\^!+#{}]") || RegExMatch(value, "i)\b(F\d+|Numpad\w+|Tab|Enter|Esc|Escape|Home|End|PgUp|PgDn|Up|Down|Left|Right|Delete|Insert)\b")
     }
 }

@@ -10,11 +10,6 @@ SetWorkingDir(A_ScriptDir)
 #Include %A_ScriptDir%\core\HotkeyEngine.ahk
 #Include %A_ScriptDir%\gui\MainEditor.ahk
 
-#Include %A_ScriptDir%\actions\BuiltInActions.ahk
-#Include %A_ScriptDir%\actions\OpenFoldersActions.ahk
-#Include %A_ScriptDir%\actions\PremiereActions.ahk
-#Include %A_ScriptDir%\RightModifierHotkeys_v4.user-actions.ahk
-
 global g_App := App_Boot()
 
 if g_App["validateOnly"] {
@@ -31,12 +26,7 @@ App_Boot() {
     }
 
     store := BindingStore(A_ScriptDir "\RightModifierHotkeys_v4.config.json", A_ScriptDir "\RightModifierHotkeys_v4.defaults.json")
-    registry := ActionRegistry()
-
-    RegisterBuiltInActions(registry)
-    RegisterOpenFoldersActions(registry)
-    RegisterPremiereActions(registry)
-    RegisterUserActions(registry)
+    registry := ActionRegistry(A_ScriptDir "\RightModifierHotkeys_v4.actions.json", store)
 
     engine := HotkeyEngine(store, registry)
     engine.Install()
@@ -105,6 +95,7 @@ App_ReloadConfig(*) {
     global g_App
     try {
         g_App["store"].Reload()
+        g_App["registry"].Reload()
         MainEditor.RefreshOpenEditor()
         App_ShowStatus("RightModifierHotkeys v4 config reloaded")
     } catch as err {

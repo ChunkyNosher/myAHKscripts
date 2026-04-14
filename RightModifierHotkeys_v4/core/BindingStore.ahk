@@ -16,11 +16,25 @@ class BindingStore {
             this.WriteDocument(this.configPath, Schema.CreateConfigDocument())
         }
 
-        this.configDoc := this.LoadDocument(this.configPath, false)
+        this.configDoc := this.LoadConfigDocument()
         this.keys := this.defaultsDoc["keys"]
         this.modifiers := this.defaultsDoc["modifiers"]
         this.bindings := Schema.MergeBindings(this.defaultsDoc["bindings"], this.configDoc["bindings"])
         return this.bindings
+    }
+
+    LoadConfigDocument() {
+        try {
+            return this.LoadDocument(this.configPath, false)
+        } catch {
+            if FileExist(this.configPath) {
+                this.CreateBackup(this.configPath, "config-invalid")
+            }
+
+            repaired := Schema.CreateConfigDocument()
+            this.WriteDocument(this.configPath, repaired)
+            return repaired
+        }
     }
 
     GetConfigPath() {
@@ -140,7 +154,7 @@ class BindingStore {
     }
 
     LoadDocument(path, requireInventory) {
-        text := FileRead(path, "UTF-8")
+        text := this.ReadJsonText(path)
         if (Trim(text) = "") {
             throw Error("JSON document is empty: " path)
         }
@@ -172,7 +186,7 @@ class BindingStore {
     }
 
     WriteDocument(path, document) {
-        file := FileOpen(path, "w", "UTF-8")
+        file := FileOpen(path, "w", "UTF-8-RAW")
         if !IsObject(file) {
             throw Error("Unable to open JSON file for writing: " path)
         }
@@ -185,6 +199,14 @@ class BindingStore {
         if !DirExist(this.backupDir) {
             DirCreate(this.backupDir)
         }
+    }
+
+    ReadJsonText(path) {
+        text := FileRead(path, "UTF-8")
+        if (SubStr(text, 1, 1) = Chr(0xFEFF)) {
+            text := SubStr(text, 2)
+        }
+        return text
     }
 
     EnsureConfigKeyBindings(keyId) {

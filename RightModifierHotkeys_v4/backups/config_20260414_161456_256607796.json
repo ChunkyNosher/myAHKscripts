@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "bindings": {
+    "SC002": {
+      "RCtrl": { "type": "send_keys", "value": "^{F14}" },
+      "RAlt": { "type": "send_keys", "value": "!{F14}" },
+      "RShift": { "type": "send_keys", "value": "+{F14}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F14}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F14}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F14}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F14}" }
+    },
+    "SC003": {
+      "RCtrl": { "type": "send_keys", "value": "^{F15}" },
+      "RAlt": { "type": "send_keys", "value": "!{F15}" },
+      "RShift": { "type": "send_keys", "value": "+{F15}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F15}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F15}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F15}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F15}" }
+    },
+    "SC004": {
+      "RCtrl": { "type": "send_keys", "value": "^{F16}" },
+      "RAlt": { "type": "send_keys", "value": "!{F16}" },
+      "RShift": { "type": "send_keys", "value": "+{F16}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F16}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F16}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F16}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F16}" }
+    },
+    "SC005": {
+      "RCtrl": { "type": "send_keys", "value": "^{F17}" },
+      "RAlt": { "type": "send_keys", "value": "!{F17}" },
+      "RShift": { "type": "send_keys", "value": "+{F17}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F17}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F17}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F17}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F17}" }
+    },
+    "SC006": {
+      "RCtrl": { "type": "send_keys", "value": "^{F18}" },
+      "RAlt": { "type": "send_keys", "value": "!{F18}" },
+      "RShift": { "type": "send_keys", "value": "+{F18}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F18}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F18}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F18}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F18}" }
+    },
+    "SC007": {
+      "RCtrl": { "type": "send_keys", "value": "^{F19}" },
+      "RAlt": { "type": "send_keys", "value": "!{F19}" },
+      "RShift": { "type": "send_keys", "value": "+{F19}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F19}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F19}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F19}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F19}" }
+    },
+    "SC008": {
+      "RCtrl": { "type": "send_keys", "value": "^{F20}" },
+      "RAlt": { "type": "send_keys", "value": "!{F20}" },
+      "RShift": { "type": "send_keys", "value": "+{F20}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F20}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F20}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F20}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F20}" }
+    },
+    "SC009": {
+      "RCtrl": { "type": "send_keys", "value": "^{F21}" },
+      "RAlt": { "type": "send_keys", "value": "!{F21}" },
+      "RShift": { "type": "send_keys", "value": "+{F21}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F21}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F21}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F21}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F21}" }
+    },
+    "SC00A": {
+      "RCtrl": { "type": "send_keys", "value": "^{F22}" },
+      "RAlt": { "type": "send_keys", "value": "!{F22}" },
+      "RShift": { "type": "send_keys", "value": "+{F22}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F22}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F22}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F22}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F22}" }
+    },
+    "SC00B": {
+      "RCtrl": { "type": "send_keys", "value": "^{F13}" },
+      "RAlt": { "type": "send_keys", "value": "!{F13}" },
+      "RShift": { "type": "send_keys", "value": "+{F13}" },
+      "RCtrl_RAlt": { "type": "send_keys", "value": "^!{F13}" },
+      "RCtrl_RShift": { "type": "send_keys", "value": "^+{F13}" },
+      "RAlt_RShift": { "type": "send_keys", "value": "!+{F13}" },
+      "RCtrl_RAlt_RShift": { "type": "send_keys", "value": "^!+{F13}" }
+    },
+    "SC030": {
+      "RCtrl": { "type": "action", "actionId": "launch_zen" }
+    },
+    "SC020": {
+      "RShift": { "type": "send_keys", "value": "^c" }
+    },
+    "SC021": {
+      "RCtrl": { "type": "action", "actionId": "launch_focusrite" }
+    },
+    "SC032": {
+      "RCtrl": { "type": "action", "actionId": "launch_one_commander" },
+      "RAlt": { "type": "send_keys", "value": "!{F23}" },
+      "RShift": { "type": "send_keys", "value": "+{F23}" },
+      "RCtrl_RShift": { "type": "action", "actionId": "open_all_folders" }
+    },
+    "SC031": {
+      "RCtrl": { "type": "action", "actionId": "launch_premiere" },
+      "RShift": { "type": "action", "actionId": "activate_notepad_plus_plus" }
+    },
+    "SC019": {
+      "RCtrl": { "type": "action", "actionId": "activate_notepad_plus_plus" }
+    },
+    "SC013": {
+      "RCtrl": { "type": "action", "actionId": "toggle_random_wiggler_premiere" }
+    },
+    "SC014": {
+      "RCtrl": { "type": "action", "actionId": "toggle_always_on_top" }
+    },
+    "SC02F": {
+      "RCtrl": { "type": "action", "actionId": "activate_vscode" }
+    },
+    "SC015": {
+      "RCtrl": { "type": "action", "actionId": "launch_yt_dlp_batch" },
+      "RAlt": { "type": "action", "actionId": "launch_yt_dlp_batch_checker" },
+      "RShift": { "type": "send_text", "value": "yt-dlp -t mp4" }
+    },
+    "SC028": {
+      "RShift": { "type": "send_keys", "value": "^x" }
+    },
+    "SC14B": {
+      "RCtrl": { "type": "action", "actionId": "slide_in_from_left" }
+    }
+  }
+}
