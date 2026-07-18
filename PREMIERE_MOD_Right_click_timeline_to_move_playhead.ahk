@@ -42,10 +42,10 @@ timeline7 = 0x191919 ;the color of a SELECTED blank space on the timeline, IN th
 timeline8 = 0x1c1c1c ;NEW color as of 2024, of the NON TARGETED space between in/out points. UNFORTUNATELY, this is also the same color as the BINS in areas where there are no items, meaning now you can't right click to make new items and folders and stuff, and therefore, I must remove it from the list below. SUPER LAME.
 
 ;These screen bounds are more stable than Premiere's changing timeline ClassNN value.
-timelinePanelTargetX := 335
-timelinePanelTargetY := 718
-timelinePanelTargetW := 1630
-timelinePanelTargetH := 651
+timelinePanelTargetX := 228
+timelinePanelTargetY := 762
+timelinePanelTargetW := 1626
+timelinePanelTargetH := 607
 timelinePanelTolerance := 35
 PremiereTimelinePanelClassNN := ""
 

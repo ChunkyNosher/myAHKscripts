@@ -204,7 +204,6 @@ HandleHotkey(key) {
 ; CUSTOM ACTION FUNCTIONS
 ; =============================================
 
-#Include Open Folders v2.ahk
 #Include Premiere Preset Hotkeys.ahk
 
 LaunchYTDlpBatch() {
