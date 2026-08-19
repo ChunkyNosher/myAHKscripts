@@ -16,7 +16,7 @@ set "VFRDET_FRAMES=2000"
 set "USE_FASTSTART=0"
 set "LOG_TIMINGS=1"
 
-set "LOG_DIR=%~dp0logs"
+set "LOG_DIR=E:\chunky-dev\myEditingScripts\logs"
 if not exist "%LOG_DIR%" mkdir "%LOG_DIR%" >nul 2>&1
 for /f "delims=" %%T in ('powershell -NoProfile -Command "Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'"') do set "LOG_STAMP=%%T"
 set "LOG_FILE=%LOG_DIR%\%LOG_STAMP%.txt"
@@ -177,10 +177,10 @@ set "TSCALE=!NUM!"
 set /a TNUM=!NUM! 2>nul
 if !TNUM! GTR 90000 set "TSCALE=60000"
 set "CFR_ARGS=-video_track_timescale !TSCALE!"
-set "CFR_DESC=-video_track_timescale !TSCALE! (integer CFR)"
+set "CFR_DESC=-video_track_timescale !TSCALE! (integer CFR, VFR 0.000)"
 if not "!DEN!"=="1" (
-  set "CFR_ARGS=-bsf:v setts=time_base=1/!NUM!:ts=N*!DEN!:duration=!DEN!:prescale=1 -video_track_timescale !TSCALE!"
-  set "CFR_DESC=-bsf:v setts=time_base=1/!NUM!:ts=N*!DEN!:duration=!DEN!:prescale=1 -video_track_timescale !TSCALE! (NTSC CFR)"
+  set "CFR_ARGS=-bsf:v setts=time_base=1/!NUM!:pts=round(PTS/!DEN!)*!DEN!:dts=round(DTS/!DEN!)*!DEN!:duration=!DEN!:prescale=1 -video_track_timescale !TSCALE!"
+  set "CFR_DESC=-bsf:v setts=time_base=1/!NUM!:pts=round(PTS/!DEN!)*!DEN!:dts=round(DTS/!DEN!)*!DEN!:duration=!DEN!:prescale=1 -video_track_timescale !TSCALE! (NTSC CFR snapping, VFR 0.000)"
 )
 set "MOVFLAGS="
 if "!USE_FASTSTART!"=="1" set "MOVFLAGS=-movflags +faststart"
