@@ -223,7 +223,7 @@ LaunchYTDlpBatch() {
     }
     
     ; No existing process found, launch a new one
-    Run, "E:\Chunky's Master Folder\myEditingScripts\yt-dlp batch downloader.bat", , , batchPID
+    Run, "E:\chunky-dev\myEditingScripts\yt-dlp batch downloader.bat", , , batchPID
     
     ; Wait a bit for the process to start and store the PID
     Sleep, 1000
@@ -253,7 +253,7 @@ LaunchYTDlpBatchChecker() {
     }
     
     ; No existing process found, launch a new one
-    Run, "E:\Chunky's Master Folder\myEditingScripts\yt-dlp-format-checker.bat", , , batchPID
+    Run, "E:\chunky-dev\myEditingScripts\yt-dlp-format-checker.bat", , , batchPID
     
     ; Wait a bit for the process to start and store the PID
     Sleep, 1000

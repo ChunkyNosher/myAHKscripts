@@ -17,12 +17,12 @@ RegisterBuiltInActions(registry) {
 
 LaunchYtDlpBatch() {
     static batchPid := 0
-    return BuiltIn_LaunchBatchScript("E:\Chunky's Master Folder\myEditingScripts\yt-dlp batch downloader.bat", &batchPid)
+    return BuiltIn_LaunchBatchScript("E:\chunky-dev\myEditingScripts\yt-dlp batch downloader.bat", &batchPid)
 }
 
 LaunchYtDlpBatchChecker() {
     static batchPid := 0
-    return BuiltIn_LaunchBatchScript("E:\Chunky's Master Folder\myEditingScripts\yt-dlp-format-checker.bat", &batchPid)
+    return BuiltIn_LaunchBatchScript("E:\chunky-dev\myEditingScripts\yt-dlp-format-checker.bat", &batchPid)
 }
 
 LaunchArc() {

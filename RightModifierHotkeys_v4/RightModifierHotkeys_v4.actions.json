@@ -6,7 +6,7 @@
 			"label": "Launch yt-dlp Batch Downloader",
 			"kind": "launch_batch_script",
 			"data": {
-				"scriptPath": "E:\\Chunky's Master Folder\\myEditingScripts\\yt-dlp batch downloader.bat"
+				"scriptPath": "E:\\chunky-dev\\myEditingScripts\\yt-dlp batch downloader.bat"
 			}
 		},
 		{
@@ -14,7 +14,7 @@
 			"label": "Launch yt-dlp Format Checker",
 			"kind": "launch_batch_script",
 			"data": {
-				"scriptPath": "E:\\Chunky's Master Folder\\myEditingScripts\\yt-dlp-format-checker.bat"
+				"scriptPath": "E:\\chunky-dev\\myEditingScripts\\yt-dlp-format-checker.bat"
 			}
 		},
 		{
