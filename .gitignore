@@ -17,4 +17,4 @@ __pycache__/
 *.pyd
 .Python
 *.so
-
+logs/
